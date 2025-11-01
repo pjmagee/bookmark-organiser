@@ -1,0 +1,63 @@
+[project]
+name = "bookmark-organiser"
+version = "0.1.0"
+description = "LLM-driven bookmark reorganization for Chromium/Brave exports"
+authors = [{ name = "Patrick Magee" }]
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+keywords = ["bookmarks", "organizer", "llm", "chromium", "brave"]
+
+# Base dependencies (standard flow is stdlib-only; openai for LLM mode)
+dependencies = [
+  "openai>=1.0.0",
+  "requests>=2.32.0",
+  "beautifulsoup4>=4.12.0",
+  "attrs>=23.1.0",
+  "python-dotenv>=1.0.0",
+  "pytest>=8.0.0",
+  "ruff>=0.5.0",
+]
+
+[project.optional-dependencies]
+# Extra groups if you expand later, e.g., linting or testing
+dev = [
+  "pytest>=8.0.0",
+  "ruff>=0.5.0"
+]
+
+[tool.uv]
+package = false
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["bookmark_organiser"]
+
+[tool.ruff]
+line-length = 100
+fix = true
+unsafe-fixes = true
+
+[tool.ruff.lint]
+select = ["ALL"]
+fixable = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = [
+  "S101",  # allow asserts in tests
+  "D",     # ignore docstring requirements
+  "PLR2004",  # magic numbers in tests
+  "FBT001", "FBT002",  # boolean positional/default in test helpers
+  "ANN",  # missing type annotations
+  "EM101", "EM102",  # exception messages style
+  "TRY003",  # long messages in raise
+  "RET504",  # unnecessary list comprehension warnings
+]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+python_files = ["test_*.py", "*_test.py"]
+pythonpath = ["bookmark_organiser"]
